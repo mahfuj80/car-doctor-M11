@@ -6,16 +6,25 @@ import { useState } from 'react';
 // DRY --> Do not Repeat Yourself
 const Services = () => {
   const [asc, setAsc] = useState(true);
-  const services = useServices(asc);
+  const [search, setSearch] = useState('');
+  // const [min, setMin] = useState(undefined);
+  // const [max, setMax] = useState(undefined);
+  const services = useServices(asc, search);
   // const [services, setServices] = useState([]);
 
   // useEffect(() => {
-  //   fetch(`https://car-doctor-server-ten-gilt.vercel.app/services?sort=${asc?'asc':'desc'}`)
+  //   fetch(`https://car-doctor-server-ten-gilt.vercel.app/services?sort=${asc?'asc':'desc'}&search=${search}`)
   //     .then((res) => res.json())
   //     .then((data) => {
   //       setServices(data);
   //     });
   // }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchText = e.target.search.value;
+    setSearch(searchText);
+  };
   return (
     <div className="py-16">
       <div className="text-center space-y-4">
@@ -26,6 +35,10 @@ const Services = () => {
           humour, or randomised words which do not look even slightly
           believable.
         </p>
+        <form onSubmit={handleSearch}>
+          <input type="text" name="search" id="" />
+          <input type="submit" value={'Search'} className="btn" />
+        </form>
         <button onClick={() => setAsc(!asc)} className="btn btn-secondary">
           {asc ? 'Price: High to Low' : 'Price: Low to High'}
         </button>

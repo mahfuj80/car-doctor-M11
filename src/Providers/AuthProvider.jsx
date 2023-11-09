@@ -42,6 +42,7 @@ const AuthProvider = ({ children }) => {
 
       // if user exists then issue a token
       if (currentUser) {
+        console.log(currentUser, 'logged user', loggedUser);
         axios
           .post(
             'https://car-doctor-server-ten-gilt.vercel.app/jwt',

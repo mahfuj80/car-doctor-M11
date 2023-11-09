@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { AuthContext } from '../../Providers/AuthProvider';
+import axios from 'axios';
 
 const CheckOut = () => {
   const service = useLoaderData();
@@ -24,20 +25,31 @@ const CheckOut = () => {
 
     console.log(booking);
 
-    fetch('https://car-doctor-server-ten-gilt.vercel.app/bookings', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(booking),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.insertedId) {
+    axios
+      .post('https://car-doctor-server-ten-gilt.vercel.app/bookings', booking, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.insertedId) {
           alert('service book successfully');
         }
       });
+
+    // fetch('https://car-doctor-server-ten-gilt.vercel.app/bookings', {
+    //   method: 'POST',
+    //   headers: {
+    //     'content-type': 'application/json',
+    //   },
+    //   body: JSON.stringify(booking),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     if (data.insertedId) {
+    //       alert('service book successfully');
+    //     }
+    //   });
   };
   return (
     <div>

@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../Providers/AuthProvider';
+import useAuth from '../../hooks/useAuth';
 import BookingRow from './BookingRow';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useEffect, useState } from 'react';
 // import axios from 'axios';
 
 const Bookings = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const axiosSecure = useAxiosSecure();
 
@@ -13,7 +13,7 @@ const Bookings = () => {
   const url = `/bookings?email=${user?.email}`;
   useEffect(() => {
     axiosSecure.get(url, { withCredentials: true }).then((res) => {
-      setBookings(res.data);
+      setBookings(res?.data);
     });
     //     fetch(url)
     //       .then((res) => res.json())
@@ -60,7 +60,7 @@ const Bookings = () => {
   };
   return (
     <div>
-      <h2 className="text-5xl">Your bookings: {bookings.length}</h2>
+      <h2 className="text-5xl">Your bookings: {bookings?.length}</h2>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}

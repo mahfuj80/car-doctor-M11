@@ -1,12 +1,15 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg';
-// import { useContext } from 'react';
-// import { AuthContext } from '../../Providers/AuthProvider';
-import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
+import { useEffect } from 'react';
 const Login = () => {
+  const { user } = useAuth();
+  useEffect(() => {
+    if (user) {
+      navigate(location?.state ? location?.state : '/');
+    }
+  }, []);
   const { signIn } = useAuth();
-  // const { signIn } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -20,20 +23,10 @@ const Login = () => {
     signIn(email, password)
       .then((result) => {
         const loggedInUser = result.user;
-        console.log(loggedInUser);
-        const user = { email };
-
-        // get access token
-        axios
-          .post('https://car-doctor-server-ten-gilt.vercel.app/jwt', user, {
-            withCredentials: true,
-          })
-          .then((res) => {
-            console.log(res.data);
-            if (res?.data?.success) {
-              navigate(location?.state ? location?.state : '/');
-            }
-          });
+        const email = loggedInUser?.email;
+        if (email) {
+          navigate(location?.state ? location?.state : '/');
+        }
       })
       .catch((error) => console.log(error));
   };
@@ -41,7 +34,7 @@ const Login = () => {
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row">
         <div className="lg:w-1/2 lg:mr-12">
-          <img src={img} alt="Logn image" />
+          <img src={img} alt="Logo image" />
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <form onSubmit={handleLogin} className="card-body">
